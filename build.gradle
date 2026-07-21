@@ -75,12 +75,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    compileOnly fg.deobf(file('libs/emi-forge-1.1.22.jar'))
-    runtimeOnly fg.deobf(file('libs/emi-forge-1.1.22.jar'))
+    compileOnly fg.deobf(files('libs/emi-forge-1.1.22.jar'))
+    runtimeOnly fg.deobf(files('libs/emi-forge-1.1.22.jar'))
 
-    compileOnly fg.deobf(file('libs/appliedenergistics2-15.2.15-api.jar'))
-    compileOnly fg.deobf(file('libs/appliedenergistics2-15.2.15.jar'))
-    runtimeOnly fg.deobf(file('libs/appliedenergistics2-15.2.15.jar'))
+    compileOnly fg.deobf(files('libs/appliedenergistics2-15.2.15-api.jar'))
+    compileOnly fg.deobf(files('libs/appliedenergistics2-15.2.15.jar'))
+    runtimeOnly fg.deobf(files('libs/appliedenergistics2-15.2.15.jar'))
 
     implementation 'org.lz4:lz4-java:1.8.0'
 }
