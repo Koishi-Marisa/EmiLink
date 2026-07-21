@@ -49,7 +49,8 @@ public record AEAutocraftRequestPacket(ItemStack template, int amount) {
 
     public static void handle(AEAutocraftRequestPacket msg, Supplier<NetworkEvent.Context> ctx) {
         PacketHelper.handleServerBound(ctx, () -> {
-            if (ctx.get().getSender() instanceof ServerPlayer sp) {
+            ServerPlayer sp = ctx.get().getSender();
+            if (sp != null) {
                 msg.handleInServer(sp);
             }
         });

@@ -18,8 +18,8 @@ public final class AEQuickCraftDelayHandler {
     public static void schedule(InventoryAction action, int slotIndex, long id, int containerId, Object sourceScreen,
                                 Object sourceMenu, Object recipeId) {
         pending = new PendingResultClick(action, slotIndex, id, containerId, sourceScreen, sourceMenu, String.valueOf(recipeId), 3);
-        ModLogger.debug("AE_EMI_CTRL_CRAFT delayed-click scheduled action={} slot={} id={} container={} recipe={} screen={} menu={}",
-                action, slotIndex, id, container, recipeId,
+        ModLogger.debug("AE_EMI_CTRL_CRAFT delayed-click scheduled action={} slot={} id={} containerId={} recipe={} screen={} menu={}",
+                action, slotIndex, id, containerId, recipeId,
                 sourceScreen == null ? "null" : sourceScreen.getClass().getName(),
                 sourceMenu == null ? "null" : sourceMenu.getClass().getName());
     }

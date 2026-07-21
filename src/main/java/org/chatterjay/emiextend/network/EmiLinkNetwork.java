@@ -1,8 +1,10 @@
 package org.chatterjay.emiextend.network;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -12,6 +14,9 @@ import org.chatterjay.emiextend.EmiAE2;
 import org.chatterjay.emiextend.util.ModLogger;
 
 import java.lang.reflect.Method;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.chatterjay.emiextend.network.packet.c2s.AEAutocraftAmountOverridePacket;
 import org.chatterjay.emiextend.network.packet.c2s.AEAutocraftRequestPacket;
 import org.chatterjay.emiextend.network.packet.c2s.AEBatchQueryPacket;
@@ -70,9 +75,9 @@ public final class EmiLinkNetwork {
     }
 
     private static <T> void registerMessage(Class<T> clazz,
-                                            net.minecraftforge.network.simple.MessageEncoder<T> encoder,
-                                            net.minecraftforge.network.simple.MessageDecoder<T> decoder,
-                                            net.minecraftforge.network.simple.MessageConsumer<T> handler,
+                                            BiConsumer<T, FriendlyByteBuf> encoder,
+                                            Function<FriendlyByteBuf, T> decoder,
+                                            BiConsumer<T, Supplier<NetworkEvent.Context>> handler,
                                             NetworkDirection direction) {
         CHANNEL.registerMessage(nextId++, clazz, encoder, decoder, handler, direction);
     }

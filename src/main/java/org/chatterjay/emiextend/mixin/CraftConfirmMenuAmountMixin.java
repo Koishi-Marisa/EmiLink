@@ -4,7 +4,6 @@ import appeng.api.networking.crafting.CalculationStrategy;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.stacks.AEKey;
 import appeng.helpers.IMenuCraftingPacket;
-import appeng.menu.locator.MenuHostLocator;
 import appeng.menu.me.crafting.CraftConfirmMenu;
 import net.minecraft.server.level.ServerPlayer;
 import org.chatterjay.emiextend.util.AeAutocraftAmountOverride;
@@ -29,7 +28,7 @@ public abstract class CraftConfirmMenuAmountMixin {
                                                               CalculationStrategy strategy,
                                                               IActionHost terminal,
                                                               ServerPlayer player,
-                                                              MenuHostLocator locator,
+                                                              Object locator,
                                                               List<IMenuCraftingPacket.AutoCraftEntry> stacksToCraft) {
         return menu.planJob(what, AeAutocraftAmountOverride.consume(player, amount), strategy);
     }
