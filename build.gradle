@@ -11,22 +11,8 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
-    maven {
-        name = "Alibaba"
-        url = "https://maven.aliyun.com/repository/public/"
-    }
-    maven {
-        name = "Alibaba Google"
-        url = "https://maven.aliyun.com/repository/google/"
-    }
-    maven {
-        name = "Alibaba Gradle Plugin"
-        url = "https://maven.aliyun.com/repository/gradle-plugin/"
-    }
-    maven {
-        name = "HuaweiCloud"
-        url = "https://mirrors.huaweicloud.com/repository/maven/"
-    }
+    // Maven Central first — contains com.mojang, com.google, etc.
+    mavenCentral()
     maven {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/releases/"
