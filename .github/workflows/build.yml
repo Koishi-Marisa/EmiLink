@@ -25,6 +25,22 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: Download AE2 dependency
+        run: |
+          mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
+          curl -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
+            -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
+          cat > libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.pom << 'POM'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <modelVersion>4.0.0</modelVersion>
+            <groupId>appeng</groupId>
+            <artifactId>appliedenergistics2</artifactId>
+            <version>15.4.10</version>
+            <packaging>jar</packaging>
+          </project>
+          POM
+
       - name: Build
         run: ./gradlew build
 
@@ -54,6 +70,22 @@ jobs:
 
       - name: Make gradlew executable
         run: chmod +x gradlew
+
+      - name: Download AE2 dependency
+        run: |
+          mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
+          curl -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
+            -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
+          cat > libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.pom << 'POM'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <modelVersion>4.0.0</modelVersion>
+            <groupId>appeng</groupId>
+            <artifactId>appliedenergistics2</artifactId>
+            <version>15.4.10</version>
+            <packaging>jar</packaging>
+          </project>
+          POM
 
       - name: Build Release
         run: ./gradlew build -Pmod_version=${GITHUB_REF_NAME#v}
