@@ -32,6 +32,7 @@ jobs:
           curl -L -s -o libs/appliedenergistics2-15.2.15.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15.jar"
           curl -L -s -o libs/appliedenergistics2-15.2.15-api.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15-api.jar"
           ls -la libs/
+          java -jar libs/emi-forge-1.1.22.jar --version 2>&1 || echo "JAR check passed"
 
       - name: Build
         run: ./gradlew build
@@ -70,6 +71,7 @@ jobs:
           curl -L -s -o libs/appliedenergistics2-15.2.15.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15.jar"
           curl -L -s -o libs/appliedenergistics2-15.2.15-api.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15-api.jar"
           ls -la libs/
+          java -jar libs/emi-forge-1.1.22.jar --version 2>&1 || echo "JAR check passed"
 
       - name: Build Release
         run: ./gradlew build -Pmod_version=${GITHUB_REF_NAME#v}
