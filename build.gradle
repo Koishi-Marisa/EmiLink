@@ -26,9 +26,18 @@ repositories {
     }
     // Maven Central first — contains com.mojang, com.google, etc.
     mavenCentral()
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/releases/"
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "TerraformersMC"
+                url = "https://maven.terraformersmc.com/releases/"
+            }
+        }
+        filter {
+            includeGroup "org.parchmentmc"
+            includeGroup "dev.emi"
+            includeGroup "com.terraformersmc"
+        }
     }
     maven {
         name = "NeoForged"
@@ -90,8 +99,8 @@ dependencies {
     implementation "org.lz4:lz4-java:1.8.0"
 
     // EMI for Forge 1.20.1 (full jar — code references internal classes like EmiFavorite, BoM)
-    compileOnly "dev.emi:emi-forge:${emi_version}"
-    runtimeOnly "dev.emi:emi-forge:${emi_version}"
+    compileOnly files("${projectDir}/libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar")
+    runtimeOnly files("${projectDir}/libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar")
 
     // AE2 for 1.20.1 Forge (from local maven repo, pre-downloaded in CI)
     compileOnly files("${projectDir}/libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar")
