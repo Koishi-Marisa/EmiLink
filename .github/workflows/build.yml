@@ -25,8 +25,9 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Download AE2 dependency
+      - name: Download dependencies
         run: |
+          # AE2
           mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
           curl -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
             -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
@@ -37,6 +38,21 @@ jobs:
             <groupId>appeng</groupId>
             <artifactId>appliedenergistics2</artifactId>
             <version>15.4.10</version>
+            <packaging>jar</packaging>
+          </project>
+          POM
+
+          # EMI
+          mkdir -p "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/"
+          curl -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
+            -o "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
+          cat > "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.pom" << 'POM'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <modelVersion>4.0.0</modelVersion>
+            <groupId>dev.emi</groupId>
+            <artifactId>emi-forge</artifactId>
+            <version>1.1.22+1.20.1</version>
             <packaging>jar</packaging>
           </project>
           POM
@@ -71,8 +87,9 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Download AE2 dependency
+      - name: Download dependencies
         run: |
+          # AE2
           mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
           curl -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
             -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
@@ -83,6 +100,21 @@ jobs:
             <groupId>appeng</groupId>
             <artifactId>appliedenergistics2</artifactId>
             <version>15.4.10</version>
+            <packaging>jar</packaging>
+          </project>
+          POM
+
+          # EMI
+          mkdir -p "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/"
+          curl -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
+            -o "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
+          cat > "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.pom" << 'POM'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <modelVersion>4.0.0</modelVersion>
+            <groupId>dev.emi</groupId>
+            <artifactId>emi-forge</artifactId>
+            <version>1.1.22+1.20.1</version>
             <packaging>jar</packaging>
           </project>
           POM
