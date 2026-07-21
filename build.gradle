@@ -11,6 +11,19 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+    // Local maven repo first — contains pre-downloaded AE2 and EMI for CI
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Local libs"
+                url = file("libs/maven")
+            }
+        }
+        filter {
+            includeGroup "appeng"
+            includeGroup "dev.emi"
+        }
+    }
     // Maven Central first — contains com.mojang, com.google, etc.
     mavenCentral()
     maven {
@@ -20,17 +33,6 @@ repositories {
     maven {
         name = "NeoForged"
         url = "https://maven.neoforged.net/releases/"
-    }
-    maven {
-        name = "Modmaven (AE2 for 1.20.1 Forge)"
-        url = "https://modmaven.dev/"
-        content {
-            includeGroup "appeng"
-        }
-    }
-    maven {
-        name = "Local libs"
-        url = file("libs/maven")
     }
     maven {
         name = "Curios Maven"
