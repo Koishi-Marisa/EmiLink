@@ -90,8 +90,8 @@ dependencies {
     compileOnly "dev.emi:emi-forge:${emi_version}"
     runtimeOnly "dev.emi:emi-forge:${emi_version}"
 
-    // AE2 for 1.20.1 Forge (local maven repo; maven.appliedenergistics.org is down)
-    compileOnly fg.deobf("appeng:appliedenergistics2:15.4.10")
+    // AE2 for 1.20.1 Forge (from local maven repo, pre-downloaded in CI)
+    compileOnly files("${projectDir}/libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar")
 
     // Optional integrations: provided via local libs (drop into libs/)
     // BeyondDimensions, ExtendedAE+, Ars Nouveau are loaded reflectively at runtime,
