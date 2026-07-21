@@ -4,6 +4,7 @@ plugins {
     id 'idea'
     id 'net.minecraftforge.gradle' version '6.0.42'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'com.wynprice.cursemaven' version '2.1.1'
 }
 
 version = mod_version
@@ -29,8 +30,11 @@ repositories {
         }
     }
     maven {
-        name = "AE2 Maven (NeoForge versions)"
-        url = "https://maven.appliedenergistics.org/releases/"
+        name = "CurseMaven"
+        url = "https://cursemaven.com/"
+        content {
+            includeGroup "curse.maven"
+        }
     }
     maven {
         name = "Curios Maven"
@@ -88,8 +92,9 @@ dependencies {
     compileOnly "dev.emi:emi-forge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-forge:${emi_version}"
 
-    // AE2 for 1.20.1 Forge (group=appeng on modmaven.dev)
-    compileOnly "appeng:appliedenergistics2:${ae2_version}"
+    // AE2 for 1.20.1 Forge via CurseMaven (maven.appliedenergistics.org is down)
+    // AE2 CurseForge project ID: 223794, file ID for forge-15.4.10: 7148487
+    compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
 
     // Optional integrations: provided via local libs (drop into libs/)
     // BeyondDimensions, ExtendedAE+, Ars Nouveau are loaded reflectively at runtime,
