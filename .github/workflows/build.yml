@@ -27,10 +27,12 @@ jobs:
 
       - name: Download dependencies
         run: |
-          # AE2 from CurseForge CDN
+          # AE2 from GitHub Releases (more reliable than CurseForge CDN)
           mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
-          curl --http1.1 -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
+          curl --http1.1 --retry 5 --retry-delay 3 -sL \
+            "https://github.com/AppliedEnergistics/Applied-Energistics-2/releases/download/forge%2Fv15.4.10/appliedenergistics2-forge-15.4.10.jar" \
             -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
+          [ -s libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar ] || { echo "AE2 download failed"; exit 1; }
           cat > libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.pom << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
           <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -44,8 +46,10 @@ jobs:
 
           # EMI from TerraformersMC Maven
           mkdir -p "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/"
-          curl --http1.1 -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
+          curl --http1.1 --retry 5 --retry-delay 3 -sL \
+            "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
             -o "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
+          [ -s "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" ] || { echo "EMI download failed"; exit 1; }
           cat > "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.pom" << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
           <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -89,10 +93,12 @@ jobs:
 
       - name: Download dependencies
         run: |
-          # AE2 from CurseForge CDN
+          # AE2 from GitHub Releases (more reliable than CurseForge CDN)
           mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
-          curl --http1.1 -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
+          curl --http1.1 --retry 5 --retry-delay 3 -sL \
+            "https://github.com/AppliedEnergistics/Applied-Energistics-2/releases/download/forge%2Fv15.4.10/appliedenergistics2-forge-15.4.10.jar" \
             -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
+          [ -s libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar ] || { echo "AE2 download failed"; exit 1; }
           cat > libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.pom << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
           <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -106,8 +112,10 @@ jobs:
 
           # EMI from TerraformersMC Maven
           mkdir -p "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/"
-          curl --http1.1 -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
+          curl --http1.1 --retry 5 --retry-delay 3 -sL \
+            "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
             -o "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
+          [ -s "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" ] || { echo "EMI download failed"; exit 1; }
           cat > "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.pom" << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
           <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
