@@ -3,7 +3,7 @@ package org.chatterjay.emiextend.mixin;
 import appeng.api.networking.crafting.CalculationStrategy;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.stacks.AEKey;
-import appeng.helpers.ICraftingGridMenu;
+import appeng.helpers.IMenuCraftingPacket;
 import appeng.menu.locator.MenuHostLocator;
 import appeng.menu.me.crafting.CraftConfirmMenu;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,7 +30,7 @@ public abstract class CraftConfirmMenuAmountMixin {
                                                               IActionHost terminal,
                                                               ServerPlayer player,
                                                               MenuHostLocator locator,
-                                                              List<ICraftingGridMenu.AutoCraftEntry> stacksToCraft) {
+                                                              List<IMenuCraftingPacket.AutoCraftEntry> stacksToCraft) {
         return menu.planJob(what, AeAutocraftAmountOverride.consume(player, amount), strategy);
     }
 }

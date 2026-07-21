@@ -34,6 +34,7 @@ import org.chatterjay.emiextend.integration.AE2Proxy;
 import org.chatterjay.emiextend.integration.BDProxy;
 import org.chatterjay.emiextend.integration.CuriosProxy;
 import org.chatterjay.emiextend.integration.EAEPProxy;
+import org.chatterjay.emiextend.util.EmiCraftHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,7 +281,7 @@ public final class EmiInteractionHandler {
         }
         var cached = AENetworkCache.getCachedResult(stack);
         if (!cached.found() || cached.count() <= 0) return false;
-        EmiLinkNetwork.sendToServer(new AEExtractPacket(stack.copyWithCount(1), 1));
+        EmiLinkNetwork.sendToServer(new AEExtractPacket(EmiCraftHelper.copyWithCount(stack, 1), 1));
         org.chatterjay.emiextend.util.ModLogger.debug(
                 "AE_EMI_CTRL_CRAFT ctrl-hover extract item={} stored={} craftable={}",
                 stack.getHoverName().getString(), cached.count(), cached.craftable());
@@ -293,7 +294,7 @@ public final class EmiInteractionHandler {
         }
         var cached = AENetworkCache.getCachedResult(stack);
         if (!cached.found() || !cached.craftable()) return false;
-        EmiLinkNetwork.sendToServer(new AEAutocraftRequestPacket(stack.copyWithCount(1), 1));
+        EmiLinkNetwork.sendToServer(new AEAutocraftRequestPacket(EmiCraftHelper.copyWithCount(stack, 1), 1));
         org.chatterjay.emiextend.util.ModLogger.debug(
                 "AE_EMI_CTRL_CRAFT ctrl-hover autocraft item={} amount=1",
                 stack.getHoverName().getString());
@@ -312,7 +313,7 @@ public final class EmiInteractionHandler {
                 long available = AENetworkCache.getCachedResult(stack).count() - countReserved(reserved, stack);
                 if (available >= need) {
                     for (int i = 0; i < need; i++) {
-                        reserved.add(stack.copyWithCount(1));
+                        reserved.add(EmiCraftHelper.copyWithCount(stack, 1));
                     }
                     satisfied = true;
                     break;

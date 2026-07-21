@@ -25,13 +25,13 @@ import org.chatterjay.emiextend.config.EmiLinkConfig;
 import org.chatterjay.emiextend.integration.AE2Proxy;
 import org.chatterjay.emiextend.integration.BDProxy;
 import org.chatterjay.emiextend.network.EmiLinkNetwork;
+import org.chatterjay.emiextend.util.EmiCraftHelper;
 import org.chatterjay.emiextend.util.IPNProxy;
 import org.chatterjay.emiextend.util.ModLogger;
 
 import appeng.api.stacks.GenericStack;
-import appeng.core.network.serverbound.InventoryActionPacket;
+import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
-import appeng.integration.modules.emi.EmiStackHelper;
 import appeng.menu.slot.FakeSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
@@ -920,7 +920,7 @@ public final class InputEvents {
             if (slot instanceof FakeSlot fakeSlot) {
                 var itemStack = emiStack.getItemStack();
                 if (itemStack.isEmpty()) {
-                    var genericStack = EmiStackHelper.toGenericStack(emiStack);
+                    var genericStack = emiStackToGenericStack(emiStack);
                     if (genericStack == null) continue;
                     itemStack = GenericStack.wrapInItemStack(genericStack);
                     if (itemStack.isEmpty()) continue;
@@ -933,6 +933,21 @@ public final class InputEvents {
 
         }
         return false;
+    }
+
+    /**
+     * Reflection wrapper for EmiStackHelper.toGenericStack(EmiStack).
+     * AE2 1.20.1 Forge does not have the emi integration module,
+     * so this will return null on that platform.
+     */
+    private static appeng.api.stacks.GenericStack emiStackToGenericStack(dev.emi.emi.api.stack.EmiStack emiStack) {
+        try {
+            Class<?> clazz = Class.forName("appeng.integration.modules.emi.EmiStackHelper");
+            var method = clazz.getMethod("toGenericStack", dev.emi.emi.api.stack.EmiStack.class);
+            return (appeng.api.stacks.GenericStack) method.invoke(null, emiStack);
+        } catch (ReflectiveOperationException e) {
+            return null;
+        }
     }
 
     private static boolean tryFillCraftingTrackerLocatorSlot(Screen screen,
@@ -955,7 +970,7 @@ public final class InputEvents {
 
         try {
             var method = screen.getClass().getMethod(CRAFTING_TRACKER_APPLY_GHOST_FILTER, int.class, ItemStack.class);
-            method.invoke(screen, slotIndex, itemStack.copyWithCount(1));
+            method.invoke(screen, slotIndex, EmiCraftHelper.copyWithCount(itemStack, 1));
             ModLogger.debug("QuickFillSlot: set Crafting Tracker locator slot {} with {}",
                     slotIndex, emiStack.getId());
             return true;
@@ -1175,7 +1190,7 @@ public final class InputEvents {
                 if (input == null || input.isEmpty()) continue;
                 for (var es : input.getEmiStacks()) {
                     var s = es.getItemStack();
-                    if (!s.isEmpty()) preflightItems.add(s.copyWithCount(1));
+                    if (!s.isEmpty()) preflightItems.add(EmiCraftHelper.copyWithCount(s, 1));
                 }
             }
         }
@@ -1230,14 +1245,14 @@ public final class InputEvents {
                 for (var output : node.recipe.getOutputs()) {
                     var stack = output.getItemStack();
                     if (stack.isEmpty()) continue;
-                    queryItems.add(stack.copyWithCount(1));
+                    queryItems.add(EmiCraftHelper.copyWithCount(stack, 1));
                 }
                 for (var input : node.recipe.getInputs()) {
                     if (input == null || input.isEmpty()) continue;
                     for (var es : input.getEmiStacks()) {
                         var stack = es.getItemStack();
                         if (stack.isEmpty()) continue;
-                        queryItems.add(stack.copyWithCount(1));
+                        queryItems.add(EmiCraftHelper.copyWithCount(stack, 1));
                     }
                 }
             }
@@ -1357,7 +1372,7 @@ public final class InputEvents {
                 EmiLinkNetwork.sendToServer(new AEDepositPacket(stack.copy(), i));
                 inv.setItem(i, ItemStack.EMPTY);
                 total += stack.getCount();
-                invalidation.add(stack.copyWithCount(1));
+                invalidation.add(EmiCraftHelper.copyWithCount(stack, 1));
             }
         }
 
@@ -1367,7 +1382,7 @@ public final class InputEvents {
             EmiLinkNetwork.sendToServer(new AEDepositPacket(carried.copy(), -1));
             player.containerMenu.setCarried(ItemStack.EMPTY);
             total += carried.getCount();
-            invalidation.add(carried.copyWithCount(1));
+            invalidation.add(EmiCraftHelper.copyWithCount(carried, 1));
         }
 
         if (total > 0) {
@@ -1466,7 +1481,7 @@ public final class InputEvents {
                         preflightGoalNode, jobNeededAmounts, mc.player, preflightGoalNode, goalOutputDeduction);
                 if (directAeRequest != null) {
                     EmiLinkNetwork.sendToServer(new AEAutocraftRequestPacket(
-                            directAeRequest.stack().copyWithCount(1), directAeRequest.missing()));
+                            EmiCraftHelper.copyWithCount(directAeRequest.stack(), 1), directAeRequest.missing()));
                     qcLog(runId, "AE_QUICKCRAFT direct top-down ME autocraft recipe={} item={} needed={} available={} missing={}; quick craft job paused before manual chain",
                             recipeId(directAeRequest.node()),
                             directAeRequest.stack().getHoverName().getString(),
@@ -1678,7 +1693,7 @@ public final class InputEvents {
                             node.recipe.getId(), aeInputNeed.stack().getHoverName().getString(),
                             aeInputNeed.needed(), available, missing);
                     EmiLinkNetwork.sendToServer(new AEAutocraftRequestPacket(
-                            aeInputNeed.stack().copyWithCount(1), (int) Math.min(Integer.MAX_VALUE, missing)));
+                            EmiCraftHelper.copyWithCount(aeInputNeed.stack(), 1), (int) Math.min(Integer.MAX_VALUE, missing)));
                     abortCurrentJob("prefill AE autocraft request");
                     return;
                 }
@@ -1928,7 +1943,7 @@ public final class InputEvents {
                 if (!slot.isEmpty()) continue;
 
                 int moved = Math.min(out.getMaxStackSize(), remaining);
-                simulated.set(i, out.copyWithCount(moved));
+                simulated.set(i, EmiCraftHelper.copyWithCount(out, moved));
                 remaining -= moved;
             }
 
@@ -2221,7 +2236,7 @@ public final class InputEvents {
                 }
                 var cached = AENetworkCache.getCachedResult(stack);
                 if (cached.craftable()) {
-                    craftableStack = stack.copyWithCount(1);
+                    craftableStack = EmiCraftHelper.copyWithCount(stack, 1);
                     break;
                 }
             }
@@ -2279,7 +2294,7 @@ public final class InputEvents {
             if (missing > 0) {
                 return new AeCraftableShortage(
                         node,
-                        stack.copyWithCount(1),
+                        EmiCraftHelper.copyWithCount(stack, 1),
                         needed,
                         available,
                         (int) Math.min(Integer.MAX_VALUE, missing));

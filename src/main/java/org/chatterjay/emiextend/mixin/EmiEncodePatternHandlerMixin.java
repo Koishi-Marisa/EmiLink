@@ -1,6 +1,5 @@
 package org.chatterjay.emiextend.mixin;
 
-import appeng.integration.modules.emi.EmiEncodePatternHandler;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import net.minecraft.world.item.crafting.Recipe;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = EmiEncodePatternHandler.class, remap = false, priority = 1500)
+@Mixin(targets = "appeng.integration.modules.emi.EmiEncodePatternHandler", remap = false, priority = 1500)
 public class EmiEncodePatternHandlerMixin {
 
     /**

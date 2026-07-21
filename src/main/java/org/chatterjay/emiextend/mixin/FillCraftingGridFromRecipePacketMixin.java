@@ -1,6 +1,6 @@
 package org.chatterjay.emiextend.mixin;
 
-import appeng.core.network.serverbound.FillCraftingGridFromRecipePacket;
+import appeng.core.sync.packets.FillCraftingGridFromRecipePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.chatterjay.emiextend.util.ModLogger;

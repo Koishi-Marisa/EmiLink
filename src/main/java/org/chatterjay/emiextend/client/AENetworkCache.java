@@ -22,6 +22,7 @@ import org.chatterjay.emiextend.integration.AE2Proxy;
 import org.chatterjay.emiextend.integration.CuriosProxy;
 import org.chatterjay.emiextend.network.EmiLinkNetwork;
 import org.chatterjay.emiextend.network.packet.c2s.AEBatchQueryPacket;
+import org.chatterjay.emiextend.util.EmiCraftHelper;
 import org.chatterjay.emiextend.util.ModLogger;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -72,7 +73,7 @@ public final class AENetworkCache {
     public static void submitForBatch(ItemStack stack) {
         if (!EmiLinkConfig.ENABLE_AE_NETWORK_LOOKUP.get()) return;
         if (stack == null || stack.isEmpty()) return;
-        pendingBatch.add(stack.copyWithCount(1));
+        pendingBatch.add(EmiCraftHelper.copyWithCount(stack, 1));
     }
 
     /** Returns true once per terminal open, signalling the mixin to scan visible items. */
@@ -342,7 +343,7 @@ public final class AENetworkCache {
 
     public static void receiveResponse(ItemStack stack, long count, boolean craftable) {
         if (stack == null || stack.isEmpty()) return;
-        var key = stack.copyWithCount(1);
+        var key = EmiCraftHelper.copyWithCount(stack, 1);
         current.cache.put(key, new CachedInfo(count, craftable, System.currentTimeMillis()));
         cacheDirty = true;
     }
@@ -445,6 +446,8 @@ public final class AENetworkCache {
     /**
      * Cache lookup. ItemStack.hashCode/equals in 1.21.1 ignores count,
      * so keys stored with copyWithCount(1) are found by any count variant.
+     * We use EmiCraftHelper.copyWithCount for 1.20.1 compatibility since
+     * ItemStack.copyWithCount(int) does not exist on that version.
      * Falls back to linear scan for collision/component edge cases.
      */
     private static CachedInfo findCached(ItemStack stack) {

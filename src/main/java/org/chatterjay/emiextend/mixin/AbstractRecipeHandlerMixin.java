@@ -1,9 +1,8 @@
 package org.chatterjay.emiextend.mixin;
 
-import appeng.core.network.serverbound.InventoryActionPacket;
+import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
-import appeng.integration.modules.emi.EmiUseCraftingRecipeHandler;
-import appeng.integration.modules.itemlists.CraftingHelper;
+import net.minecraft.resources.ResourceLocation;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
 import appeng.menu.me.items.CraftingTermMenu;
@@ -210,7 +209,7 @@ public class AbstractRecipeHandlerMixin {
                             recipe.getId(), overrideAmount.amount(), EmiCraftHelper.getAeAutocraftRequestedAmount());
                 }
             }
-            CraftingHelper.performTransfer(ctm, recipeObj.getId(), craftingRecipe, true);
+            invokeCraftingHelperPerformTransfer(ctm, recipeObj.getId(), craftingRecipe, true);
             ModLogger.debug("AE_EMI_CTRL_CRAFT missing-autocraft-transfer sent recipe={} recipeId={} craftMissing=true",
                     recipe.getId(), recipeObj.getId());
             return;
@@ -248,7 +247,7 @@ public class AbstractRecipeHandlerMixin {
                 }
                 var cached = AENetworkCache.getCachedResult(stack);
                 if (cached.craftable()) {
-                    craftableStack = stack.copyWithCount(1);
+                    craftableStack = EmiCraftHelper.copyWithCount(stack, 1);
                     break;
                 }
             }
@@ -409,14 +408,14 @@ public class AbstractRecipeHandlerMixin {
                 return;
             }
         }
-        reserved.put(stack.copyWithCount(1), amount);
+        reserved.put(EmiCraftHelper.copyWithCount(stack, 1), amount);
     }
 
     @Unique
     private static Map<Integer, Ingredient> getGuiSlotToIngredientMap(EmiRecipe emiRecipe, Level level) {
         Recipe<?> recipe = getRecipe(level, emiRecipe);
         if (recipe != null) {
-            return EmiUseCraftingRecipeHandler.getGuiSlotToIngredientMap(recipe);
+            return invokeGetGuiSlotToIngredientMap(recipe);
         }
 
         var result = new HashMap<Integer, Ingredient>();
@@ -505,5 +504,31 @@ public class AbstractRecipeHandlerMixin {
             joiner.add(stackJoiner.toString());
         }
         return joiner.toString();
+    }
+
+    @Unique
+    private static Map<Integer, Ingredient> invokeGetGuiSlotToIngredientMap(Recipe<?> recipe) {
+        try {
+            Class<?> clazz = Class.forName("appeng.integration.modules.emi.EmiUseCraftingRecipeHandler");
+            var method = clazz.getMethod("getGuiSlotToIngredientMap", Recipe.class);
+            @SuppressWarnings("unchecked")
+            Map<Integer, Ingredient> result = (Map<Integer, Ingredient>) method.invoke(null, recipe);
+            return result != null ? result : Map.of();
+        } catch (ReflectiveOperationException e) {
+            ModLogger.debug("EmiUseCraftingRecipeHandler not available (AE2 1.20.1 Forge), using fallback");
+            return Map.of();
+        }
+    }
+
+    @Unique
+    private static boolean invokeCraftingHelperPerformTransfer(CraftingTermMenu ctm, ResourceLocation recipeId, CraftingRecipe craftingRecipe, boolean craftMissing) {
+        try {
+            Class<?> clazz = Class.forName("appeng.integration.modules.itemlists.CraftingHelper");
+            var method = clazz.getMethod("performTransfer", CraftingTermMenu.class, ResourceLocation.class, CraftingRecipe.class, boolean.class);
+            return (boolean) method.invoke(null, ctm, recipeId, craftingRecipe, craftMissing);
+        } catch (ReflectiveOperationException e) {
+            ModLogger.debug("CraftingHelper not available (AE2 1.20.1 Forge), using fallback");
+            return false;
+        }
     }
 }

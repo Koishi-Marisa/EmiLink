@@ -1,10 +1,22 @@
 package org.chatterjay.emiextend.util;
 
+import net.minecraft.world.item.ItemStack;
+
 /**
  * ThreadLocal flag for passing single-craft signal from InventoryActionPacket.extraId
  * to CraftingTermSlot.doClick within the same server thread.
  */
 public class EmiCraftHelper {
+
+    /**
+     * 1.20.1 compatibility: ItemStack.copyWithCount(int) does not exist in 1.20.1.
+     * Use this helper instead.
+     */
+    public static ItemStack copyWithCount(ItemStack stack, int count) {
+        ItemStack copy = stack.copy();
+        copy.setCount(count);
+        return copy;
+    }
     private static final ThreadLocal<Boolean> singleCraftToInventory = ThreadLocal.withInitial(() -> false);
     private static final ThreadLocal<Boolean> aeAutocraftFromQuickCraft = ThreadLocal.withInitial(() -> false);
     private static final ThreadLocal<Boolean> aeAutocraftHandoff = ThreadLocal.withInitial(() -> false);
