@@ -27,9 +27,9 @@ jobs:
 
       - name: Download dependencies
         run: |
-          # AE2
+          # AE2 from CurseForge CDN
           mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
-          curl -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
+          curl --http1.1 -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
             -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
           cat > libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.pom << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
@@ -42,9 +42,9 @@ jobs:
           </project>
           POM
 
-          # EMI
+          # EMI from TerraformersMC Maven
           mkdir -p "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/"
-          curl -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
+          curl --http1.1 -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
             -o "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
           cat > "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.pom" << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
@@ -89,9 +89,9 @@ jobs:
 
       - name: Download dependencies
         run: |
-          # AE2
+          # AE2 from CurseForge CDN
           mkdir -p libs/maven/appeng/appliedenergistics2/15.4.10/
-          curl -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
+          curl --http1.1 -sL "https://edge.forgecdn.net/files/7148/487/appliedenergistics2-forge-15.4.10.jar" \
             -o libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar
           cat > libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.pom << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
@@ -104,9 +104,9 @@ jobs:
           </project>
           POM
 
-          # EMI
+          # EMI from TerraformersMC Maven
           mkdir -p "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/"
-          curl -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
+          curl --http1.1 -sL "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar" \
             -o "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
           cat > "libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.pom" << 'POM'
           <?xml version="1.0" encoding="UTF-8"?>
