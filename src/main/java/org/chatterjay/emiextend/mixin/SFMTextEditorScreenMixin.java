@@ -13,9 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Screen.class)
 public class SFMTextEditorScreenMixin {
-    @Inject(method = "init(Lnet/minecraft/client/Minecraft;II)V", at = @At("RETURN"), remap = false)
-    private void emilink$addSfmEditorEmiWidgets(Minecraft minecraft, int width, int height, CallbackInfo ci) {
+    @Inject(method = "init()V", at = @At("RETURN"))
+    private void emilink$addSfmEditorEmiWidgets(CallbackInfo ci) {
         Screen screen = (Screen) (Object) this;
+        Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.screen == screen && emilink$isSfmTextEditor(screen)) {
             EmiScreenManager.addWidgets(screen);
         }
