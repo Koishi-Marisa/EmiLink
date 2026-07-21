@@ -43,7 +43,7 @@ jobs:
 
           for url in "${AE2_URLS[@]}"; do
             echo "Trying AE2 from: $url"
-            if wget --tries=5 --waitretry=3 --timeout=30 -q -O "$AE2_JAR" "$url"; then
+            if wget --tries=10 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$EMI_JAR" "$url"; then
               if [ -s "$AE2_JAR" ] && [ "$(stat -c%s "$AE2_JAR")" -gt 1000000 ]; then
                 echo "AE2 download succeeded ($(stat -c%s "$AE2_JAR") bytes)"
                 break
@@ -76,19 +76,24 @@ jobs:
 
           # Try multiple sources for EMI
           EMI_URLS=(
+            "https://github.com/emilyploszaj/emi/releases/download/1.1.22%2B1.20.1/emi-1.1.22+1.20.1+forge.jar"
             "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
             "https://cdn.modrinth.com/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
+            "https://edge.forgecdn.net/files/5370/202/emi-forge-1.1.22+1.20.1.jar"
           )
 
           for url in "${EMI_URLS[@]}"; do
             echo "Trying EMI from: $url"
-            if wget --tries=5 --waitretry=3 --timeout=30 -q -O "$EMI_JAR" "$url"; then
+            if wget --tries=5 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$EMI_JAR" "$url"; then
               if [ -s "$EMI_JAR" ] && [ "$(stat -c%s "$EMI_JAR")" -gt 500000 ]; then
                 echo "EMI download succeeded ($(stat -c%s "$EMI_JAR") bytes)"
                 break
+              else
+                echo "EMI file too small ($(stat -c%s "$EMI_JAR" 2>/dev/null || echo 0) bytes), trying next..."
               fi
+            else
+              echo "EMI wget failed (exit code $?), trying next..."
             fi
-            echo "EMI download failed from this source, trying next..."
             rm -f "$EMI_JAR"
           done
 
@@ -157,7 +162,7 @@ jobs:
 
           for url in "${AE2_URLS[@]}"; do
             echo "Trying AE2 from: $url"
-            if wget --tries=5 --waitretry=3 --timeout=30 -q -O "$AE2_JAR" "$url"; then
+            if wget --tries=10 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$EMI_JAR" "$url"; then
               if [ -s "$AE2_JAR" ] && [ "$(stat -c%s "$AE2_JAR")" -gt 1000000 ]; then
                 echo "AE2 download succeeded ($(stat -c%s "$AE2_JAR") bytes)"
                 break
@@ -189,19 +194,24 @@ jobs:
           mkdir -p "$EMI_DIR"
 
           EMI_URLS=(
+            "https://github.com/emilyploszaj/emi/releases/download/1.1.22%2B1.20.1/emi-1.1.22+1.20.1+forge.jar"
             "https://maven.terraformersmc.com/releases/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
             "https://cdn.modrinth.com/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar"
+            "https://edge.forgecdn.net/files/5370/202/emi-forge-1.1.22+1.20.1.jar"
           )
 
           for url in "${EMI_URLS[@]}"; do
             echo "Trying EMI from: $url"
-            if wget --tries=5 --waitretry=3 --timeout=30 -q -O "$EMI_JAR" "$url"; then
+            if wget --tries=5 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$EMI_JAR" "$url"; then
               if [ -s "$EMI_JAR" ] && [ "$(stat -c%s "$EMI_JAR")" -gt 500000 ]; then
                 echo "EMI download succeeded ($(stat -c%s "$EMI_JAR") bytes)"
                 break
+              else
+                echo "EMI file too small ($(stat -c%s "$EMI_JAR" 2>/dev/null || echo 0) bytes), trying next..."
               fi
+            else
+              echo "EMI wget failed (exit code $?), trying next..."
             fi
-            echo "EMI download failed from this source, trying next..."
             rm -f "$EMI_JAR"
           done
 
