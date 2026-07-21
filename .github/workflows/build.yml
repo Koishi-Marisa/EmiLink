@@ -25,6 +25,14 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: Download dependencies
+        run: |
+          mkdir -p libs
+          curl -L -s -o libs/emi-forge-1.1.22.jar "https://cdn.modrinth.com/data/8fKxQ0Lw/versions/1.1.22%2B1.20.1/emi-forge-1.1.22%2B1.20.1.jar"
+          curl -L -s -o libs/appliedenergistics2-15.2.15.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15.jar"
+          curl -L -s -o libs/appliedenergistics2-15.2.15-api.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15-api.jar"
+          ls -la libs/
+
       - name: Build
         run: ./gradlew build
 
@@ -54,6 +62,14 @@ jobs:
 
       - name: Make gradlew executable
         run: chmod +x gradlew
+
+      - name: Download dependencies
+        run: |
+          mkdir -p libs
+          curl -L -s -o libs/emi-forge-1.1.22.jar "https://cdn.modrinth.com/data/8fKxQ0Lw/versions/1.1.22%2B1.20.1/emi-forge-1.1.22%2B1.20.1.jar"
+          curl -L -s -o libs/appliedenergistics2-15.2.15.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15.jar"
+          curl -L -s -o libs/appliedenergistics2-15.2.15-api.jar "https://cdn.modrinth.com/data/X7A999GE/versions/15.2.15/appliedenergistics2-15.2.15-api.jar"
+          ls -la libs/
 
       - name: Build Release
         run: ./gradlew build -Pmod_version=${GITHUB_REF_NAME#v}
