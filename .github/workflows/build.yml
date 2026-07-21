@@ -43,7 +43,7 @@ jobs:
 
           for url in "${AE2_URLS[@]}"; do
             echo "Trying AE2 from: $url"
-            if wget --tries=10 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$EMI_JAR" "$url"; then
+            if wget --tries=10 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$AE2_JAR" "$url"; then
               if [ -s "$AE2_JAR" ] && [ "$(stat -c%s "$AE2_JAR")" -gt 1000000 ]; then
                 echo "AE2 download succeeded ($(stat -c%s "$AE2_JAR") bytes)"
                 break
@@ -162,7 +162,7 @@ jobs:
 
           for url in "${AE2_URLS[@]}"; do
             echo "Trying AE2 from: $url"
-            if wget --tries=10 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$EMI_JAR" "$url"; then
+            if wget --tries=10 --waitretry=5 --timeout=120 --dns-timeout=30 --connect-timeout=30 --read-timeout=120 -q -O "$AE2_JAR" "$url"; then
               if [ -s "$AE2_JAR" ] && [ "$(stat -c%s "$AE2_JAR")" -gt 1000000 ]; then
                 echo "AE2 download succeeded ($(stat -c%s "$AE2_JAR") bytes)"
                 break
