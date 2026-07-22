@@ -23,7 +23,6 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
-    // Local maven repo first — contains pre-downloaded AE2 and EMI for CI
     exclusiveContent {
         forRepository {
             maven {
@@ -36,7 +35,6 @@ repositories {
             includeGroup "dev.emi"
         }
     }
-    // Maven Central first — contains com.mojang, com.google, etc.
     mavenCentral()
     exclusiveContent {
         forRepository {
@@ -76,11 +74,17 @@ mixin {
     config "${mod_id}.mixins.json"
 }
 
-// Disable target validator so the annotation processor doesn't fail on
-// optional mod classes (BeyondDimensions, AE2 integration classes) that
-// are not on the compile classpath but use @Mixin(targets = "...")
+sourceSets {
+    stub {
+        java {
+            srcDir 'src/stub/java'
+        }
+    }
+}
+
 tasks.withType(JavaCompile) {
     options.compilerArgs += ['-AdisableTargetValidator=true']
+    classpath += sourceSets.stub.output
 }
 
 minecraft {
