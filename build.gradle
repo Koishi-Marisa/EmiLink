@@ -84,6 +84,9 @@ sourceSets {
 
 tasks.withType(JavaCompile) {
     options.compilerArgs += ['-AdisableTargetValidator=true']
+}
+
+tasks.named('compileJava') {
     classpath += sourceSets.stub.output
 }
 
