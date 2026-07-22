@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Specification-Title: emilink
+Specification-Vendor: chatterjay
+Specification-Version: 1
+Implementation-Title: EmiLink
+Implementation-Version: 1.0.0-forge-1.20.1
+Implementation-Vendor: chatterjay
+MixinConfigs: emilink.mixins.json
+

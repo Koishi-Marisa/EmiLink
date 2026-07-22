@@ -23,15 +23,15 @@ import java.util.List;
 
 @Mixin(value = EmiScreenManager.class, remap = false)
 public class EmiScreenManagerMixin {
-    @Shadow
+    @Shadow(require = 0)
     private static int lastMouseX;
-    @Shadow
+    @Shadow(require = 0)
     private static int lastMouseY;
-    @Shadow
+    @Shadow(require = 0)
     public static dev.emi.emi.api.stack.EmiIngredient pressedStack;
-    @Shadow
+    @Shadow(require = 0)
     public static dev.emi.emi.api.stack.EmiIngredient draggedStack;
-    @Shadow
+    @Shadow(require = 0)
     public static dev.emi.emi.screen.widget.EmiSearchWidget search;
 
     @Inject(method = "keyPressed", at = @At("RETURN"), cancellable = true, require = 0)

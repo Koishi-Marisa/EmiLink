@@ -1,5 +1,5 @@
 {
-  "required": true,
+  "required": false,
   "minVersion": "0.8",
   "package": "org.chatterjay.emiextend.mixin",
   "plugin": "org.chatterjay.emiextend.mixin.MixinConditionalPlugin",
@@ -45,6 +45,6 @@
     "FillCraftingGridFromRecipePacketMixin"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }

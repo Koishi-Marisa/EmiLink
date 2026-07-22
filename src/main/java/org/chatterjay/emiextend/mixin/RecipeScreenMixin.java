@@ -18,10 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(targets = "dev.emi.emi.screen.RecipeScreen", remap = false)
 public class RecipeScreenMixin {
 
-    @Shadow(remap = false)
+    @Shadow(remap = false, require = 0)
     public AbstractContainerScreen<?> old;
 
-    @Shadow(remap = false)
+    @Shadow(remap = false, require = 0)
     private int x, y, backgroundWidth;
 
     @Unique

@@ -376,7 +376,7 @@ public final class EmiInteractionHandler {
 
         try {
             Class<?> craftingTermMenuClass = Class.forName("appeng.menu.me.items.CraftingTermMenu");
-            Class<?> craftingHelperClass = Class.forName("appeng.integration.modules.itemlists.CraftingHelper");
+            Class<?> craftingHelperClass = Class.forName("appeng.integration.modules.jeirei.CraftingHelper");
             var method = craftingHelperClass.getMethod(
                     "performTransfer",
                     craftingTermMenuClass,

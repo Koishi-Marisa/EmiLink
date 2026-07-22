@@ -523,7 +523,7 @@ public class AbstractRecipeHandlerMixin {
     @Unique
     private static boolean invokeCraftingHelperPerformTransfer(CraftingTermMenu ctm, ResourceLocation recipeId, CraftingRecipe craftingRecipe, boolean craftMissing) {
         try {
-            Class<?> clazz = Class.forName("appeng.integration.modules.itemlists.CraftingHelper");
+            Class<?> clazz = Class.forName("appeng.integration.modules.jeirei.CraftingHelper");
             var method = clazz.getMethod("performTransfer", CraftingTermMenu.class, ResourceLocation.class, CraftingRecipe.class, boolean.class);
             return (boolean) method.invoke(null, ctm, recipeId, craftingRecipe, craftMissing);
         } catch (ReflectiveOperationException e) {

@@ -20,25 +20,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = BoMScreen.class, remap = false)
 public abstract class BoMScreenMixin {
-    @Shadow
+    @Shadow(require = 0)
     public AbstractContainerScreen<?> old;
 
-    @Shadow
+    @Shadow(require = 0)
     private EmiPlayerInventory playerInv;
 
-    @Shadow
+    @Shadow(require = 0)
     private Bounds mode;
 
-    @Shadow
+    @Shadow(require = 0)
     private Bounds batches;
 
-    @Shadow
+    @Shadow(require = 0)
     private double offX;
 
-    @Shadow
+    @Shadow(require = 0)
     private double offY;
 
-    @Shadow
+    @Shadow(require = 0)
     public abstract float getScale();
 
     @Inject(

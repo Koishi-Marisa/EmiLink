@@ -16,13 +16,13 @@ import java.util.List;
 @Mixin(targets = "dev.emi.emi.screen.EmiScreenManager$ScreenSpace")
 public abstract class EmiScreenSpaceStacksMixin {
 
-    @Shadow private int tw;
+    @Shadow(require = 0) private int tw;
 
-    @Shadow public int pageSize;
+    @Shadow(require = 0) public int pageSize;
 
-    @Shadow public int[] widths;
+    @Shadow(require = 0) public int[] widths;
 
-    @Shadow
+    @Shadow(require = 0)
     public abstract SidebarType getType();
 
     @Inject(method = "getStacks", at = @At("RETURN"), cancellable = true, remap = false)

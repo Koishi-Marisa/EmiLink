@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(targets = "appeng.integration.modules.itemlists.EncodingHelper", remap = false)
+@Mixin(targets = "appeng.integration.modules.jeirei.EncodingHelper", remap = false)
 public class EncodingHelperMixin {
 
     @Inject(method = "encodeProcessingRecipe", at = @At("RETURN"))
