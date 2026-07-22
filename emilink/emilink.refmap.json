@@ -1,0 +1,52 @@
+{
+  "mappings": {
+    "org/chatterjay/emiextend/mixin/SFMTextEditorMouseMixin": {
+      "onPress": "Lnet/minecraft/client/MouseHandler;m_91530_(JIII)V",
+      "Lnet/minecraft/client/gui/screens/Screen;wrapScreenError(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V": "Lnet/minecraft/client/gui/screens/Screen;m_96579_(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V",
+      "onScroll": "Lnet/minecraft/client/MouseHandler;m_91526_(JDD)V",
+      "turnPlayer": "Lnet/minecraft/client/MouseHandler;m_91523_()V"
+    },
+    "org/chatterjay/emiextend/mixin/SFMTextEditorKeyboardMixin": {
+      "Lnet/minecraft/client/gui/screens/Screen;wrapScreenError(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V": "Lnet/minecraft/client/gui/screens/Screen;m_96579_(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V",
+      "charTyped": "Lnet/minecraft/client/KeyboardHandler;m_90889_(JII)V",
+      "keyPress": "Lnet/minecraft/client/KeyboardHandler;m_90893_(JIIII)V"
+    },
+    "org/chatterjay/emiextend/mixin/AbstractContainerScreenMixin": {
+      "keyPressed": "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;m_7933_(III)Z"
+    },
+    "org/chatterjay/emiextend/mixin/AbstractContainerScreenAccessor": {
+      "hoveredSlot": "f_97734_:Lnet/minecraft/world/inventory/Slot;"
+    },
+    "org/chatterjay/emiextend/mixin/SFMTextEditorScreenMixin": {
+      "init()V": "Lnet/minecraft/client/gui/screens/Screen;m_7856_()V",
+      "resize": "Lnet/minecraft/client/gui/screens/Screen;m_6574_(Lnet/minecraft/client/Minecraft;II)V",
+      "render": "Lnet/minecraft/client/gui/screens/Screen;m_88315_(Lnet/minecraft/client/gui/GuiGraphics;IIF)V"
+    }
+  },
+  "data": {
+    "searge": {
+      "org/chatterjay/emiextend/mixin/SFMTextEditorMouseMixin": {
+        "onPress": "Lnet/minecraft/client/MouseHandler;m_91530_(JIII)V",
+        "Lnet/minecraft/client/gui/screens/Screen;wrapScreenError(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V": "Lnet/minecraft/client/gui/screens/Screen;m_96579_(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V",
+        "onScroll": "Lnet/minecraft/client/MouseHandler;m_91526_(JDD)V",
+        "turnPlayer": "Lnet/minecraft/client/MouseHandler;m_91523_()V"
+      },
+      "org/chatterjay/emiextend/mixin/SFMTextEditorKeyboardMixin": {
+        "Lnet/minecraft/client/gui/screens/Screen;wrapScreenError(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V": "Lnet/minecraft/client/gui/screens/Screen;m_96579_(Ljava/lang/Runnable;Ljava/lang/String;Ljava/lang/String;)V",
+        "charTyped": "Lnet/minecraft/client/KeyboardHandler;m_90889_(JII)V",
+        "keyPress": "Lnet/minecraft/client/KeyboardHandler;m_90893_(JIIII)V"
+      },
+      "org/chatterjay/emiextend/mixin/AbstractContainerScreenMixin": {
+        "keyPressed": "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;m_7933_(III)Z"
+      },
+      "org/chatterjay/emiextend/mixin/AbstractContainerScreenAccessor": {
+        "hoveredSlot": "f_97734_:Lnet/minecraft/world/inventory/Slot;"
+      },
+      "org/chatterjay/emiextend/mixin/SFMTextEditorScreenMixin": {
+        "init()V": "Lnet/minecraft/client/gui/screens/Screen;m_7856_()V",
+        "resize": "Lnet/minecraft/client/gui/screens/Screen;m_6574_(Lnet/minecraft/client/Minecraft;II)V",
+        "render": "Lnet/minecraft/client/gui/screens/Screen;m_88315_(Lnet/minecraft/client/gui/GuiGraphics;IIF)V"
+      }
+    }
+  }
+}

@@ -26,7 +26,9 @@ public class MobSeparator {
     /** Called after EmiStackList.reload() to capture mob creative tab items. */
     public static void init() {
         MOB_ITEMS.clear();
-        var allTabs = CreativeModeTabs.allTabs();
+        // 1.20.1 compat: CreativeModeTabs.allTabs() does not exist in 1.20.1.
+        // In 1.20.1, CreativeModeTabs is a registry class exposing all tabs via the static tabs() method.
+        var allTabs = CreativeModeTabs.tabs();
         ModLogger.debug("MobSeparator: scanning {} creative tabs", allTabs.size());
         for (CreativeModeTab tab : allTabs) {
             ResourceLocation key = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(tab);
@@ -36,7 +38,10 @@ public class MobSeparator {
                 String path = key.getPath();
                 if (path.contains("spawn_egg") || path.contains("mob") || path.contains("creature")) {
                     int count = 0;
-                    for (ItemStack stack : tab.getSearchTabDisplayItems()) {
+                    // 1.20.1 compat: CreativeModeTab.getSearchTabDisplayItems() does not exist in 1.20.1.
+                    // In 1.20.1, a CreativeModeTab exposes its displayed items via getDisplayItems(),
+                    // which returns a Collection<ItemStack> for the tab's own contents.
+                    for (ItemStack stack : tab.getDisplayItems()) {
                         MOB_ITEMS.add(EmiStack.of(stack));
                         count++;
                     }

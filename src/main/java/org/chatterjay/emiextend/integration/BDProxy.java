@@ -743,8 +743,8 @@ public class BDProxy {
                                     // Try the Forge SimpleChannel.send method signature
                                     try {
                                         Method send = channel.getClass().getMethod("send",
-                                                packet.getClass(),
-                                                net.minecraft.network.PacketDirection.class);
+                                                Object.class,
+                                                net.minecraftforge.network.NetworkDirection.class);
                                         // can't easily get the direction; fall through
                                     } catch (NoSuchMethodException ignored) {}
                                 }

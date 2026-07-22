@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@EventBusSubscriber(modid = EmiAE2.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = EmiAE2.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.FORGE)
 public class BDShortcutHandler {
     public static boolean serverHasMod = false;
 
@@ -314,7 +314,8 @@ public class BDShortcutHandler {
     private static void click(AbstractContainerMenu menu, int containerId, int slotIndex, int button, net.minecraft.world.inventory.ClickType clickType) {
         var mc = Minecraft.getInstance();
         if (mc.gameMode == null || mc.player == null) return;
-        if (menu.isValidSlotIndex(slotIndex) || slotIndex == -999) {
+        // 1.20.1: AbstractContainerMenu.isValidSlotIndex(int) doesn't exist, use manual bounds check
+        if ((slotIndex >= 0 && slotIndex < menu.slots.size()) || slotIndex == -999) {
             mc.gameMode.handleInventoryMouseClick(containerId, slotIndex, button, clickType, mc.player);
         }
     }
@@ -409,8 +410,9 @@ public class BDShortcutHandler {
         return idx >= 0 && idx < 36 && !locked.contains(idx);
     }
 
+    // 1.20.1: Slot.getMaxStackSize(ItemStack) doesn't exist, only no-arg version
     private static int getSlotStackLimit(Slot slot, ItemStack stack) {
-        return Math.min(slot.getMaxStackSize(), slot.getMaxStackSize(stack));
+        return Math.min(slot.getMaxStackSize(), stack.getMaxStackSize());
     }
 
     /** Check if a slot is a valid player-interaction target (skip armor/offhand). */

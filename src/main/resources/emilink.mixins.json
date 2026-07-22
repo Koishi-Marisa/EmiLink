@@ -1,9 +1,10 @@
 {
-  "required": true,
+  "required": false,
   "minVersion": "0.8",
   "package": "org.chatterjay.emiextend.mixin",
   "plugin": "org.chatterjay.emiextend.mixin.MixinConditionalPlugin",
   "compatibilityLevel": "JAVA_17",
+  "refmap": "emilink.refmap.json",
   "client": [
     "AbstractRecipeHandlerMixin",
     "AbstractContainerScreenAccessor",
@@ -44,6 +45,6 @@
     "FillCraftingGridFromRecipePacketMixin"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }

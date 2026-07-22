@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -6,38 +16,42 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
+apply plugin: 'org.spongepowered.mixin'
+
 version = mod_version
 group = mod_group_id
 
 repositories {
     mavenLocal()
-    maven {
-        name = "Alibaba"
-        url = "https://maven.aliyun.com/repository/public/"
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Local libs"
+                url = file("libs/maven")
+            }
+        }
+        filter {
+            includeGroup "appeng"
+            includeGroup "dev.emi"
+        }
     }
-    maven {
-        name = "Alibaba Google"
-        url = "https://maven.aliyun.com/repository/google/"
-    }
-    maven {
-        name = "Alibaba Gradle Plugin"
-        url = "https://maven.aliyun.com/repository/gradle-plugin/"
-    }
-    maven {
-        name = "HuaweiCloud"
-        url = "https://mirrors.huaweicloud.com/repository/maven/"
-    }
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/releases/"
+    mavenCentral()
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "TerraformersMC"
+                url = "https://maven.terraformersmc.com/releases/"
+            }
+        }
+        filter {
+            includeGroup "org.parchmentmc"
+            includeGroup "dev.emi"
+            includeGroup "com.terraformersmc"
+        }
     }
     maven {
         name = "NeoForged"
         url = "https://maven.neoforged.net/releases/"
-    }
-    maven {
-        name = "AE2 Maven"
-        url = "https://maven.appliedenergistics.org/releases/"
     }
     maven {
         name = "Curios Maven"
@@ -54,6 +68,27 @@ base {
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+}
+
+sourceSets {
+    stub {
+        java {
+            srcDir 'src/stub/java'
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-AdisableTargetValidator=true']
+}
+
+tasks.named('compileJava') {
+    classpath += sourceSets.stub.output
+}
 
 minecraft {
     mappings channel: 'parchment', version: "${parchment_minecraft_version}-${parchment_mappings_version}-${minecraft_version}"
@@ -91,12 +126,16 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // EMI for Forge 1.20.1
-    compileOnly "dev.emi:emi-forge:${emi_version}:api"
-    runtimeOnly "dev.emi:emi-forge:${emi_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    // AE2 (Forge/NeoForge unified jar for 1.20.1)
-    compileOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}"
+    implementation "org.lz4:lz4-java:1.8.0"
+
+    // EMI for Forge 1.20.1 (full jar — code references internal classes like EmiFavorite, BoM)
+    compileOnly files("${projectDir}/libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar")
+    runtimeOnly files("${projectDir}/libs/maven/dev/emi/emi-forge/1.1.22+1.20.1/emi-forge-1.1.22+1.20.1.jar")
+
+    // AE2 for 1.20.1 Forge (from local maven repo, pre-downloaded in CI)
+    compileOnly files("${projectDir}/libs/maven/appeng/appliedenergistics2/15.4.10/appliedenergistics2-15.4.10.jar")
 
     // Optional integrations: provided via local libs (drop into libs/)
     // BeyondDimensions, ExtendedAE+, Ars Nouveau are loaded reflectively at runtime,

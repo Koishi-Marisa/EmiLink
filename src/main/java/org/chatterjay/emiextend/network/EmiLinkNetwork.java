@@ -1,8 +1,9 @@
 package org.chatterjay.emiextend.network;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -12,6 +13,9 @@ import org.chatterjay.emiextend.EmiAE2;
 import org.chatterjay.emiextend.util.ModLogger;
 
 import java.lang.reflect.Method;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.chatterjay.emiextend.network.packet.c2s.AEAutocraftAmountOverridePacket;
 import org.chatterjay.emiextend.network.packet.c2s.AEAutocraftRequestPacket;
 import org.chatterjay.emiextend.network.packet.c2s.AEBatchQueryPacket;
@@ -51,30 +55,29 @@ public final class EmiLinkNetwork {
 
     private static synchronized void registerMessages() {
         // C2S
-        registerMessage(AEQueryPacket.class, AEQueryPacket::encode, AEQueryPacket::decode, AEQueryPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(AEAutocraftAmountOverridePacket.class, AEAutocraftAmountOverridePacket::encode, AEAutocraftAmountOverridePacket::decode, AEAutocraftAmountOverridePacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(AEAutocraftRequestPacket.class, AEAutocraftRequestPacket::encode, AEAutocraftRequestPacket::decode, AEAutocraftRequestPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(AEBatchQueryPacket.class, AEBatchQueryPacket::encode, AEBatchQueryPacket::decode, AEBatchQueryPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(AELockedSlotsPacket.class, AELockedSlotsPacket::encode, AELockedSlotsPacket::decode, AELockedSlotsPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(AEDepositPacket.class, AEDepositPacket::encode, AEDepositPacket::decode, AEDepositPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(AEExtractPacket.class, AEExtractPacket::encode, AEExtractPacket::decode, AEExtractPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(BDActionPacket.class, BDActionPacket::encode, BDActionPacket::decode, BDActionPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(BDDepositSlotPacket.class, BDDepositSlotPacket::encode, BDDepositSlotPacket::decode, BDDepositSlotPacket::handle, NetworkDirection.PLAY_TO_SERVER);
-        registerMessage(TransferMatchingPacket.class, TransferMatchingPacket::encode, TransferMatchingPacket::decode, TransferMatchingPacket::handle, NetworkDirection.PLAY_TO_SERVER);
+        registerMessage(AEQueryPacket.class, AEQueryPacket::encode, AEQueryPacket::decode, AEQueryPacket::handle);
+        registerMessage(AEAutocraftAmountOverridePacket.class, AEAutocraftAmountOverridePacket::encode, AEAutocraftAmountOverridePacket::decode, AEAutocraftAmountOverridePacket::handle);
+        registerMessage(AEAutocraftRequestPacket.class, AEAutocraftRequestPacket::encode, AEAutocraftRequestPacket::decode, AEAutocraftRequestPacket::handle);
+        registerMessage(AEBatchQueryPacket.class, AEBatchQueryPacket::encode, AEBatchQueryPacket::decode, AEBatchQueryPacket::handle);
+        registerMessage(AELockedSlotsPacket.class, AELockedSlotsPacket::encode, AELockedSlotsPacket::decode, AELockedSlotsPacket::handle);
+        registerMessage(AEDepositPacket.class, AEDepositPacket::encode, AEDepositPacket::decode, AEDepositPacket::handle);
+        registerMessage(AEExtractPacket.class, AEExtractPacket::encode, AEExtractPacket::decode, AEExtractPacket::handle);
+        registerMessage(BDActionPacket.class, BDActionPacket::encode, BDActionPacket::decode, BDActionPacket::handle);
+        registerMessage(BDDepositSlotPacket.class, BDDepositSlotPacket::encode, BDDepositSlotPacket::decode, BDDepositSlotPacket::handle);
+        registerMessage(TransferMatchingPacket.class, TransferMatchingPacket::encode, TransferMatchingPacket::decode, TransferMatchingPacket::handle);
 
         // S2C
-        registerMessage(AEQueryResponsePacket.class, AEQueryResponsePacket::encode, AEQueryResponsePacket::decode, AEQueryResponsePacket::handle, NetworkDirection.PLAY_TO_CLIENT);
-        registerMessage(AEBatchQueryResponsePacket.class, AEBatchQueryResponsePacket::encode, AEBatchQueryResponsePacket::decode, AEBatchQueryResponsePacket::handle, NetworkDirection.PLAY_TO_CLIENT);
-        registerMessage(ClearCachePacket.class, ClearCachePacket::encode, ClearCachePacket::decode, ClearCachePacket::handle, NetworkDirection.PLAY_TO_CLIENT);
-        registerMessage(ServerHasModPacket.class, ServerHasModPacket::encode, ServerHasModPacket::decode, ServerHasModPacket::handle, NetworkDirection.PLAY_TO_CLIENT);
+        registerMessage(AEQueryResponsePacket.class, AEQueryResponsePacket::encode, AEQueryResponsePacket::decode, AEQueryResponsePacket::handle);
+        registerMessage(AEBatchQueryResponsePacket.class, AEBatchQueryResponsePacket::encode, AEBatchQueryResponsePacket::decode, AEBatchQueryResponsePacket::handle);
+        registerMessage(ClearCachePacket.class, ClearCachePacket::encode, ClearCachePacket::decode, ClearCachePacket::handle);
+        registerMessage(ServerHasModPacket.class, ServerHasModPacket::encode, ServerHasModPacket::decode, ServerHasModPacket::handle);
     }
 
     private static <T> void registerMessage(Class<T> clazz,
-                                            net.minecraftforge.network.simple.MessageEncoder<T> encoder,
-                                            net.minecraftforge.network.simple.MessageDecoder<T> decoder,
-                                            net.minecraftforge.network.simple.MessageConsumer<T> handler,
-                                            NetworkDirection direction) {
-        CHANNEL.registerMessage(nextId++, clazz, encoder, decoder, handler, direction);
+                                            BiConsumer<T, FriendlyByteBuf> encoder,
+                                            Function<FriendlyByteBuf, T> decoder,
+                                            BiConsumer<T, Supplier<NetworkEvent.Context>> handler) {
+        CHANNEL.registerMessage(nextId++, clazz, encoder, decoder, handler);
     }
 
     /** Send a packet from client to server. */

@@ -1,7 +1,6 @@
 package org.chatterjay.emiextend.client.handler;
 
 import dev.emi.emi.api.render.EmiTooltipComponents;
-import dev.emi.emi.config.CheatMode;
 import dev.emi.emi.config.EmiConfig;
 import dev.emi.emi.api.EmiApi;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -34,6 +33,7 @@ import org.chatterjay.emiextend.integration.AE2Proxy;
 import org.chatterjay.emiextend.integration.BDProxy;
 import org.chatterjay.emiextend.integration.CuriosProxy;
 import org.chatterjay.emiextend.integration.EAEPProxy;
+import org.chatterjay.emiextend.util.EmiCraftHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,8 +180,7 @@ public final class EmiInteractionHandler {
             var mc = Minecraft.getInstance();
             if (mc.player != null && mc.screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> cs) {
                 var carried = cs.getMenu().getCarried();
-                boolean emiWouldDelete = EmiConfig.cheatMode == CheatMode.TRUE
-                        || (EmiConfig.cheatMode == CheatMode.CREATIVE && mc.player.isCreative());
+                boolean emiWouldDelete = EmiCraftHelper.isEmiCheatModeEnabled(mc.player);
                 if (!carried.isEmpty() && hasWirelessTerminal(mc.player) && !emiWouldDelete) {
                     var space = EmiScreenManager.getHoveredSpace((int) mouseX, (int) mouseY);
                     if (space != null) {
@@ -280,7 +279,7 @@ public final class EmiInteractionHandler {
         }
         var cached = AENetworkCache.getCachedResult(stack);
         if (!cached.found() || cached.count() <= 0) return false;
-        EmiLinkNetwork.sendToServer(new AEExtractPacket(stack.copyWithCount(1), 1));
+        EmiLinkNetwork.sendToServer(new AEExtractPacket(EmiCraftHelper.copyWithCount(stack, 1), 1));
         org.chatterjay.emiextend.util.ModLogger.debug(
                 "AE_EMI_CTRL_CRAFT ctrl-hover extract item={} stored={} craftable={}",
                 stack.getHoverName().getString(), cached.count(), cached.craftable());
@@ -293,7 +292,7 @@ public final class EmiInteractionHandler {
         }
         var cached = AENetworkCache.getCachedResult(stack);
         if (!cached.found() || !cached.craftable()) return false;
-        EmiLinkNetwork.sendToServer(new AEAutocraftRequestPacket(stack.copyWithCount(1), 1));
+        EmiLinkNetwork.sendToServer(new AEAutocraftRequestPacket(EmiCraftHelper.copyWithCount(stack, 1), 1));
         org.chatterjay.emiextend.util.ModLogger.debug(
                 "AE_EMI_CTRL_CRAFT ctrl-hover autocraft item={} amount=1",
                 stack.getHoverName().getString());
@@ -312,7 +311,7 @@ public final class EmiInteractionHandler {
                 long available = AENetworkCache.getCachedResult(stack).count() - countReserved(reserved, stack);
                 if (available >= need) {
                     for (int i = 0; i < need; i++) {
-                        reserved.add(stack.copyWithCount(1));
+                        reserved.add(EmiCraftHelper.copyWithCount(stack, 1));
                     }
                     satisfied = true;
                     break;
@@ -377,7 +376,7 @@ public final class EmiInteractionHandler {
 
         try {
             Class<?> craftingTermMenuClass = Class.forName("appeng.menu.me.items.CraftingTermMenu");
-            Class<?> craftingHelperClass = Class.forName("appeng.integration.modules.itemlists.CraftingHelper");
+            Class<?> craftingHelperClass = Class.forName("appeng.integration.modules.jeirei.CraftingHelper");
             var method = craftingHelperClass.getMethod(
                     "performTransfer",
                     craftingTermMenuClass,

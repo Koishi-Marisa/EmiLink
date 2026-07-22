@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(CraftConfirmMenu.class)
 public class CraftConfirmMenuMixin {
 
-    @Inject(method = "goBack", at = @At("HEAD"))
+    @Inject(method = "goBack", at = @At("HEAD"), remap = false)
     private void emilink$bookmarkMissingOnCancel(CallbackInfo ci) {
         CraftConfirmMenu menu = (CraftConfirmMenu) (Object) this;
         BookmarkOnCancelHandler.bookmarkMissingOnCancel(menu);

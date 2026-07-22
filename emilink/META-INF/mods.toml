@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="AGPL 3.0"
+
+[[mods]]
+modId="emilink"
+version="1.0.0-forge-1.20.1"
+displayName="EmiLink"
+authors="chatterjay"
+description="EMI integration enhancements for AE2, BeyondDimensions, and ExtendedAE_Plus (Forge 1.20.1 port)"
+logoFile="emilink.png"
+
+[[dependencies.emilink]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.emilink]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.emilink]]
+modId="emi"
+mandatory=true
+versionRange="[1.0,)"
+ordering="NONE"
+side="BOTH"

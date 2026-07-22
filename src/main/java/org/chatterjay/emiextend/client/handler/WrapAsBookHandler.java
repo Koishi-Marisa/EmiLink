@@ -2,7 +2,7 @@ package org.chatterjay.emiextend.client.handler;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.GenericStack;
-import appeng.core.network.serverbound.InventoryActionPacket;
+import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 import net.minecraft.client.Minecraft;
@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.chatterjay.emiextend.config.EmiLinkConfig;
 import org.chatterjay.emiextend.network.EmiLinkNetwork;
+import org.chatterjay.emiextend.util.EmiCraftHelper;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,7 +44,7 @@ public final class WrapAsBookHandler {
         if (output == null) return;
         if (!(output.what() instanceof AEItemKey itemKey)) return;
 
-        ItemStack original = itemKey.toStack().copyWithCount(1);
+        ItemStack original = EmiCraftHelper.copyWithCount(itemKey.toStack(), 1);
         ItemStack book = createWrittenBook(original);
 
         var outSlots = menu.getProcessingOutputSlots();

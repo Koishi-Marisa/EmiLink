@@ -53,7 +53,7 @@ public class EmiAE2 {
             }
         });
 
-        modBus.addListener(RegisterKeyMappingsEvent.class, ModKeybindings::register);
+        modBus.addListener(ModKeybindings::register);
         modBus.addListener(EmiLinkNetwork::onCommonSetup);
 
         MinecraftForge.EVENT_BUS.register(ServerEvents.class);
@@ -161,7 +161,7 @@ public class EmiAE2 {
         public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 try {
-                    PacketDistributor.PLAYER.with(serverPlayer).send(new ServerHasModPacket());
+                    EmiLinkNetwork.sendTo(new ServerHasModPacket(), serverPlayer);
                 } catch (Exception e) {
                     // Client doesn't have EmiLink installed — that's fine
                 }
@@ -182,7 +182,7 @@ public class EmiAE2 {
                             .requires(src -> src.hasPermission(0))
                             .executes(ctx -> {
                                 var player = ctx.getSource().getPlayerOrException();
-                                PacketDistributor.PLAYER.with(player).send(new ClearCachePacket());
+                                EmiLinkNetwork.sendTo(new ClearCachePacket(), player);
                                 ctx.getSource().sendSuccess(
                                         () -> Component.translatable("emilink.command.clear_cache"),
                                         false
