@@ -88,7 +88,7 @@ public class SFMTextEditorMouseMixin {
 
     @Inject(
             method = "onScroll",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;mouseScrolled(DDDD)Z"),
+            at = @At("HEAD"),
             cancellable = true
     )
     private void emilink$onSfmEditorMouseScrolled(long windowPointer, double xOffset, double yOffset, CallbackInfo ci) {
