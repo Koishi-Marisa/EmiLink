@@ -26,7 +26,7 @@ import java.util.List;
 public abstract class EmiFavoritesMixin {
     private static final String EMILINK_EMPTY_FAVORITE = "emilink_empty";
 
-    @Shadow(require = 0)
+    @Shadow
     public static List<EmiFavorite> favorites;
 
     @Inject(method = "addFavorite(Ldev/emi/emi/api/stack/EmiIngredient;)V", at = @At("HEAD"), cancellable = true)

@@ -27,19 +27,19 @@ import java.util.List;
 @Mixin(targets = "dev.emi.emi.screen.EmiScreenManager$ScreenSpace")
 public abstract class EmiScreenSpaceMixin {
 
-    @Shadow(require = 0)
+    @Shadow
     private int th;
 
-    @Shadow(require = 0)
+    @Shadow
     private int[] widths;
 
-    @Shadow(require = 0)
+    @Shadow
     public abstract List<? extends EmiIngredient> getStacks();
 
-    @Shadow(require = 0)
+    @Shadow
     public abstract int getX(int col, int row);
 
-    @Shadow(require = 0)
+    @Shadow
     public abstract int getY(int col, int row);
 
 

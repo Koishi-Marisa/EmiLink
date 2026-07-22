@@ -16,13 +16,13 @@ import java.util.List;
 
 @Mixin(targets = "dev.emi.emi.screen.EmiScreenManager$SidebarPanel", remap = false)
 public abstract class EmiSidebarPanelMixin {
-    @Shadow(require = 0)
+    @Shadow
     public ScreenSpace space;
 
-    @Shadow(require = 0)
+    @Shadow
     public int page;
 
-    @Shadow(require = 0)
+    @Shadow
     public abstract SidebarType getType();
 
     @Inject(method = "render", at = @At("HEAD"))

@@ -14,18 +14,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MouseHandler.class)
 public class SFMTextEditorMouseMixin {
-    @Shadow(require = 0)
+    @Shadow
     @Final
     private Minecraft minecraft;
-    @Shadow(require = 0)
+    @Shadow
     private double xpos;
-    @Shadow(require = 0)
+    @Shadow
     private double ypos;
-    @Shadow(require = 0)
+    @Shadow
     private int activeButton;
-    @Shadow(require = 0)
+    @Shadow
     private double accumulatedDX;
-    @Shadow(require = 0)
+    @Shadow
     private double accumulatedDY;
 
     @Inject(

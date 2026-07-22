@@ -19,7 +19,7 @@ import org.chatterjay.emiextend.util.EmiCraftHelper;
 @Mixin(CraftingTermSlot.class)
 public class CraftingTermSlotMixin {
 
-    @Shadow(remap = false, require = 0)
+    @Shadow(remap = false)
     private MEStorage storage;
 
     @Inject(method = "doClick", at = @At("HEAD"), remap = false, cancellable = true)
